@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ShowDetailPage from "./Pages/ShowDetails.Page";
-import ShowListPage from "./Pages/ShowsList.Page";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ShowDetailPage from './Pages/ShowDetails.Page';
+import ShowListPage from './Pages/ShowsList.Page';
 
 function App() {
   return (

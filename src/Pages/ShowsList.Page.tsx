@@ -1,16 +1,22 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { showsLoadedAction } from '../actions/shows';
 import { searchShow } from '../api';
 import SearchBar from '../Components/SearchBar';
 import ShowCard from '../Components/ShowCard';
 import { Show } from '../models/Show';
 
-function ShowListPage() {
+type showDetailPageProps = {
+  showsLoaded: (shows: Show[]) => void;
+};
+
+const ShowListPage: FC<showDetailPageProps> = ({ showsLoaded }) => {
   const [shows, setShows] = useState<Show[]>([]);
 
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    searchShow(query).then((shows) => setShows(shows));
+    searchShow(query).then((shows) => showsLoaded(shows));
   }, [query]);
 
   console.log(shows);
@@ -27,6 +33,10 @@ function ShowListPage() {
       </div>
     </div>
   );
-}
+};
 
-export default ShowListPage;
+const mapDispatchToProps = {
+  showsLoaded: showsLoadedAction,
+};
+
+export default connect(undefined, mapDispatchToProps)(ShowListPage);
