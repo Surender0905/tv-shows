@@ -4,11 +4,14 @@ import CastCard from '../Components/CastCard';
 import GenrePill from '../Components/GenrePill';
 import withRouter, { WithRouterProps } from '../hocs/withRouter';
 import { BiArrowBack } from 'react-icons/bi';
+import { connect } from 'react-redux';
+import { State } from '../store';
+import { Show } from '../models/Show';
 
-type ShowDetailPageProps = WithRouterProps;
+type ShowDetailPageProps = { show?: Show } & WithRouterProps;
 
-const ShowDetailPage: FC<WithRouterProps> = ({ params }) => {
-  console.log(params);
+const ShowDetailPage: FC<ShowDetailPageProps> = ({ params }) => {
+  console.log(params.showId);
   return (
     <div className="mt-2">
       <Link
@@ -104,4 +107,9 @@ const ShowDetailPage: FC<WithRouterProps> = ({ params }) => {
   );
 };
 
-export default withRouter(ShowDetailPage);
+const mapStateToProps = (state: State, ownProps: ShowDetailPageProps) => {
+  console.log('id', ownProps.params.showId);
+  return {};
+};
+
+export default withRouter(connect(mapStateToProps)(ShowDetailPage));

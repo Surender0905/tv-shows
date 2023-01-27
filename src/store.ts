@@ -1,14 +1,22 @@
-import { combineReducers, createStore } from 'redux';
+import { composeWithDevTools } from '@redux-devtools/extension';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import showReducer from './reducers/showReducer';
+import mySaga from './sagas/shows';
 
 const reducer = combineReducers({
   shows: showReducer,
 });
 
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(mySaga);
 
 export type State = ReturnType<typeof reducer>;
 

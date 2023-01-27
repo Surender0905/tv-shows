@@ -11,20 +11,15 @@ import { State } from '../store';
 type showDetailPageProps = {
   shows: Show[];
   query: string;
-  showsLoaded: (shows: Show[]) => void;
+
   showsQueryChange: (query: string) => void;
 };
 
 const ShowListPage: FC<showDetailPageProps> = ({
-  showsLoaded,
   query,
   shows,
   showsQueryChange,
 }) => {
-  useEffect(() => {
-    searchShow(query).then((shows) => showsLoaded(shows));
-  }, [query]);
-
   console.log(shows);
   return (
     <div className="mt-2">
@@ -46,7 +41,6 @@ const mapStateToProps = (state: State) => {
 };
 
 const mapDispatchToProps = {
-  showsLoaded: showsLoadedAction,
   showsQueryChange: showQueryChangeAction,
 };
 
