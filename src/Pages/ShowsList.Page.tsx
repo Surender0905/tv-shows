@@ -1,20 +1,26 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { showsLoadedAction } from '../actions/shows';
+import { showQueryChangeAction, showsLoadedAction } from '../actions/shows';
 import { searchShow } from '../api';
 import SearchBar from '../Components/SearchBar';
 import ShowCard from '../Components/ShowCard';
 import { Show } from '../models/Show';
+import { showsQuerySelector, showsSelector } from '../selectors/Shows';
+import { State } from '../store';
 
 type showDetailPageProps = {
+  shows: Show[];
+  query: string;
   showsLoaded: (shows: Show[]) => void;
+  showsQueryChange: (query: string) => void;
 };
 
-const ShowListPage: FC<showDetailPageProps> = ({ showsLoaded }) => {
-  const [shows, setShows] = useState<Show[]>([]);
-
-  const [query, setQuery] = useState('');
-
+const ShowListPage: FC<showDetailPageProps> = ({
+  showsLoaded,
+  query,
+  shows,
+  showsQueryChange,
+}) => {
   useEffect(() => {
     searchShow(query).then((shows) => showsLoaded(shows));
   }, [query]);
@@ -25,7 +31,7 @@ const ShowListPage: FC<showDetailPageProps> = ({ showsLoaded }) => {
       <SearchBar
         value={query}
         onChange={(event) => {
-          setQuery(event.target.value);
+          showsQueryChange(event.target.value);
         }}
       />
       <div className="flex flex-wrap justify-center">
@@ -35,8 +41,13 @@ const ShowListPage: FC<showDetailPageProps> = ({ showsLoaded }) => {
   );
 };
 
-const mapDispatchToProps = {
-  showsLoaded: showsLoadedAction,
+const mapStateToProps = (state: State) => {
+  return { query: showsQuerySelector(state), shows: showsSelector(state) };
 };
 
-export default connect(undefined, mapDispatchToProps)(ShowListPage);
+const mapDispatchToProps = {
+  showsLoaded: showsLoadedAction,
+  showsQueryChange: showQueryChangeAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowListPage);
