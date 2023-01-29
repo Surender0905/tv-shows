@@ -1,13 +1,24 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { showsLoadedAction, SHOWS_QUERY_CHANGE } from '../actions/shows';
-import { searchShow } from '../api';
+import { call, debounce, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import {
+  showsLoadedAction,
+  SHOWS_QUERY_CHANGE,
+  showLoadedAction,
+  LOAD_SHOW,
+} from '../actions/shows';
+import { loadShowDetail, searchShow } from '../api';
 
 import { Action } from '../actions';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* fetchShows(action: Action): Generator<any, any, any> {
+export function* fetchShows(action: Action): Generator<any, any, any> {
   const shows = yield call(searchShow, action.payload);
   yield put(showsLoadedAction(shows));
+}
+
+export function* fetchShowDetail(action: Action): Generator<any, any, any> {
+  const show = yield call(loadShowDetail, action.payload);
+
+  yield put(showLoadedAction(show));
 }
 
 /*
@@ -23,7 +34,8 @@ function* fetchShows(action: Action): Generator<any, any, any> {
   and only the latest one will be run.
 */
 function* mySaga() {
-  yield takeLatest(SHOWS_QUERY_CHANGE, fetchShows);
+  yield debounce(500, SHOWS_QUERY_CHANGE, fetchShows);
+  yield takeEvery(LOAD_SHOW, fetchShowDetail);
 }
 
 export default mySaga;

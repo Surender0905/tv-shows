@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 import {
   useLocation,
   useNavigate,
   useParams,
   useSearchParams,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 export interface WithRouterProps {
   location: ReturnType<typeof useLocation>;
@@ -19,6 +19,7 @@ const withRouter = <Props extends WithRouterProps>(
   return (props: Omit<Props, keyof WithRouterProps>) => {
     const location = useLocation();
     const params = useParams();
+
     const navigate = useNavigate();
 
     return (

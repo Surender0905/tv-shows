@@ -3,7 +3,11 @@ import { normalize, schema } from 'normalizr';
 
 import { AnyAction } from 'redux';
 import {} from '../actions';
-import { SHOWS_LOADED, SHOWS_QUERY_CHANGE } from '../actions/shows';
+import {
+  SHOWS_LOADED,
+  SHOWS_QUERY_CHANGE,
+  SHOW_DETAIL_LOADED,
+} from '../actions/shows';
 import { Show } from '../models/Show';
 
 export type State = {
@@ -33,6 +37,11 @@ function showReducer(state = initialState, action: AnyAction): State {
         const query = action.payload as string;
 
         draft.query = query;
+      });
+    case SHOW_DETAIL_LOADED:
+      return produce(state, (draft) => {
+        const show = action.payload as Show;
+        draft.shows[show.id] = show;
       });
     default:
       return state;

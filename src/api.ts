@@ -7,3 +7,9 @@ export const searchShow = async (keyword: string) => {
 
   return data;
 };
+
+export const loadShowDetail = async (showId: number) => {
+  return axios
+    .get(` https://api.tvmaze.com/shows/${showId}`)
+    .then((res) => res.data);
+};
