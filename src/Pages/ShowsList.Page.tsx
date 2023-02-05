@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { showQueryChangeAction } from '../actions/shows';
-import { searchShow } from '../api';
+import { showsQueryChange } from '../slices/shows';
+import { searchShow, searchShow2 } from '../api';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import SearchBar from '../Components/SearchBar';
 import ShowCard from '../Components/ShowCard';
@@ -47,7 +47,7 @@ const mapStateToProps = (state: State) => {
 };
 
 const mapDispatchToProps = {
-  showsQueryChange: showQueryChangeAction,
+  showsQueryChange: showsQueryChange,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -121,9 +121,7 @@ const ShowDetailPage: FC<ShowDetailPageProps> = ({
 const mapStateToProps = (state: State, ownProps: OwnProps) => {
   const id = +ownProps.params.showId;
 
-  return {
-    show: showsMapSelector(state)[id],
-  };
+  return { show: showsMapSelector(state)[id] };
 };
 
 const mapDispatchToProps = {
